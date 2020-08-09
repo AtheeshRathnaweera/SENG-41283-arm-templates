@@ -1,0 +1,180 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "sites_studentmanagement3_name": {
+            "defaultValue": "studentmanagement3",
+            "type": "String"
+        },
+        "serverfarms_ASP_atheeshresourceswin_ad5d_externalid": {
+            "defaultValue": "/subscriptions/88bc5906-158b-4378-8abf-4422e5c1f4bb/resourceGroups/atheesh-resources/providers/Microsoft.Web/serverfarms/ASP-atheeshresourceswin-ad5d",
+            "type": "String"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.Web/sites",
+            "apiVersion": "2018-11-01",
+            "name": "[parameters('sites_studentmanagement3_name')]",
+            "location": "Australia Central",
+            "kind": "app",
+            "properties": {
+                "enabled": true,
+                "hostNameSslStates": [
+                    {
+                        "name": "[concat(parameters('sites_studentmanagement3_name'), '.azurewebsites.net')]",
+                        "sslState": "Disabled",
+                        "hostType": "Standard"
+                    },
+                    {
+                        "name": "[concat(parameters('sites_studentmanagement3_name'), '.scm.azurewebsites.net')]",
+                        "sslState": "Disabled",
+                        "hostType": "Repository"
+                    }
+                ],
+                "serverFarmId": "[parameters('serverfarms_ASP_atheeshresourceswin_ad5d_externalid')]",
+                "reserved": false,
+                "isXenon": false,
+                "hyperV": false,
+                "siteConfig": {},
+                "scmSiteAlsoStopped": false,
+                "clientAffinityEnabled": true,
+                "clientCertEnabled": false,
+                "hostNamesDisabled": false,
+                "containerSize": 0,
+                "dailyMemoryTimeQuota": 0,
+                "httpsOnly": false,
+                "redundancyMode": "None"
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/config",
+            "apiVersion": "2018-11-01",
+            "name": "[concat(parameters('sites_studentmanagement3_name'), '/web')]",
+            "location": "Australia Central",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('sites_studentmanagement3_name'))]"
+            ],
+            "properties": {
+                "numberOfWorkers": 1,
+                "defaultDocuments": [
+                    "Default.htm",
+                    "Default.html",
+                    "Default.asp",
+                    "index.htm",
+                    "index.html",
+                    "iisstart.htm",
+                    "default.aspx",
+                    "index.php",
+                    "hostingstart.html"
+                ],
+                "netFrameworkVersion": "v4.0",
+                "requestTracingEnabled": true,
+                "requestTracingExpirationTime": "9999-12-31T23:59:00Z",
+                "remoteDebuggingEnabled": false,
+                "remoteDebuggingVersion": "VS2019",
+                "httpLoggingEnabled": false,
+                "logsDirectorySizeLimit": 35,
+                "detailedErrorLoggingEnabled": true,
+                "publishingUsername": "$studentmanagement3",
+                "azureStorageAccounts": {},
+                "scmType": "GitHub",
+                "use32BitWorkerProcess": false,
+                "webSocketsEnabled": false,
+                "alwaysOn": true,
+                "javaVersion": "1.8",
+                "javaContainer": "TOMCAT",
+                "javaContainerVersion": "9.0",
+                "managedPipelineMode": "Integrated",
+                "virtualApplications": [
+                    {
+                        "virtualPath": "/",
+                        "physicalPath": "site\\wwwroot",
+                        "preloadEnabled": true
+                    }
+                ],
+                "loadBalancing": "LeastRequests",
+                "experiments": {
+                    "rampUpRules": []
+                },
+                "autoHealEnabled": false,
+                "localMySqlEnabled": false,
+                "ipSecurityRestrictions": [
+                    {
+                        "ipAddress": "Any",
+                        "action": "Allow",
+                        "priority": 1,
+                        "name": "Allow all",
+                        "description": "Allow all access"
+                    }
+                ],
+                "scmIpSecurityRestrictions": [
+                    {
+                        "ipAddress": "Any",
+                        "action": "Allow",
+                        "priority": 1,
+                        "name": "Allow all",
+                        "description": "Allow all access"
+                    }
+                ],
+                "scmIpSecurityRestrictionsUseMain": false,
+                "http20Enabled": false,
+                "minTlsVersion": "1.2",
+                "ftpsState": "AllAllowed",
+                "reservedInstanceCount": 0
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/deployments",
+            "apiVersion": "2018-11-01",
+            "name": "[concat(parameters('sites_studentmanagement3_name'), '/0db88b36f109612a59c465fb625bb207b2bd11b7')]",
+            "location": "Australia Central",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('sites_studentmanagement3_name'))]"
+            ],
+            "properties": {
+                "status": 4,
+                "author_email": "rathnaweeraatheesh72@gmail.com",
+                "author": "Atheesh Rathnaweera",
+                "deployer": "GitHub",
+                "message": "intial commit\n",
+                "start_time": "2020-08-03T10:50:50.7937594Z",
+                "end_time": "2020-08-03T10:50:55.0437901Z",
+                "active": false
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/deployments",
+            "apiVersion": "2018-11-01",
+            "name": "[concat(parameters('sites_studentmanagement3_name'), '/db9f6448535a1d94f40b9c6fb0df4880f0440150')]",
+            "location": "Australia Central",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('sites_studentmanagement3_name'))]"
+            ],
+            "properties": {
+                "status": 4,
+                "author_email": "rathnaweeraatheesh72@gmail.com",
+                "author": "Atheesh Rathnaweera",
+                "deployer": "GitHub",
+                "message": "updated\n",
+                "start_time": "2020-08-03T10:53:48.5855048Z",
+                "end_time": "2020-08-03T10:53:51.5542887Z",
+                "active": true
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/hostNameBindings",
+            "apiVersion": "2018-11-01",
+            "name": "[concat(parameters('sites_studentmanagement3_name'), '/', parameters('sites_studentmanagement3_name'), '.azurewebsites.net')]",
+            "location": "Australia Central",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('sites_studentmanagement3_name'))]"
+            ],
+            "properties": {
+                "siteName": "studentmanagement3",
+                "hostNameType": "Verified"
+            }
+        }
+    ]
+}

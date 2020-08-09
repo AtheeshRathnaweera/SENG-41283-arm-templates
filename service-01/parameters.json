@@ -1,0 +1,12 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "sites_studentmanagement_redis_name": {
+            "value": null
+        },
+        "serverfarms_ASP_atheeshresourceswin_ad5d_externalid": {
+            "value": null
+        }
+    }
+}

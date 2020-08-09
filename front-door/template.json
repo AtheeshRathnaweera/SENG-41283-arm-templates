@@ -1,0 +1,121 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "frontdoors_student_management_name": {
+            "defaultValue": "student-management",
+            "type": "String"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.Network/frontdoors",
+            "apiVersion": "2020-05-01",
+            "name": "[parameters('frontdoors_student_management_name')]",
+            "location": "Global",
+            "properties": {
+                "resourceState": "Enabled",
+                "backendPools": [
+                    {
+                        "id": "[concat(resourceId('Microsoft.Network/frontdoors', parameters('frontdoors_student_management_name')), '/BackendPools/myBackendPool')]",
+                        "name": "myBackendPool",
+                        "properties": {
+                            "backends": [
+                                {
+                                    "address": "studentmanagement-redis.azurewebsites.net",
+                                    "httpPort": 80,
+                                    "httpsPort": 443,
+                                    "priority": 1,
+                                    "weight": 50,
+                                    "backendHostHeader": "studentmanagement-redis.azurewebsites.net",
+                                    "enabledState": "Enabled"
+                                }
+                            ],
+                            "healthProbeSettings": {
+                                "id": "[concat(resourceId('Microsoft.Network/frontdoors', parameters('frontdoors_student_management_name')), '/healthProbeSettings/healthProbeSettings-1597001598145')]"
+                            },
+                            "loadBalancingSettings": {
+                                "id": "[concat(resourceId('Microsoft.Network/frontdoors', parameters('frontdoors_student_management_name')), '/loadBalancingSettings/loadBalancingSettings-1597001598145')]"
+                            },
+                            "resourceState": "Enabled"
+                        }
+                    }
+                ],
+                "healthProbeSettings": [
+                    {
+                        "id": "[concat(resourceId('Microsoft.Network/frontdoors', parameters('frontdoors_student_management_name')), '/HealthProbeSettings/healthProbeSettings-1597001598145')]",
+                        "name": "healthProbeSettings-1597001598145",
+                        "properties": {
+                            "intervalInSeconds": 30,
+                            "path": "/",
+                            "protocol": "Https",
+                            "resourceState": "Enabled",
+                            "enabledState": "Enabled",
+                            "healthProbeMethod": "Head"
+                        }
+                    }
+                ],
+                "frontendEndpoints": [
+                    {
+                        "id": "[concat(resourceId('Microsoft.Network/frontdoors', parameters('frontdoors_student_management_name')), concat('/FrontendEndpoints/', parameters('frontdoors_student_management_name'), '-azurefd-net'))]",
+                        "name": "[concat(parameters('frontdoors_student_management_name'), '-azurefd-net')]",
+                        "properties": {
+                            "hostName": "[concat(parameters('frontdoors_student_management_name'), '.azurefd.net')]",
+                            "sessionAffinityEnabledState": "Disabled",
+                            "sessionAffinityTtlSeconds": 0,
+                            "resourceState": "Enabled"
+                        }
+                    }
+                ],
+                "loadBalancingSettings": [
+                    {
+                        "id": "[concat(resourceId('Microsoft.Network/frontdoors', parameters('frontdoors_student_management_name')), '/LoadBalancingSettings/loadBalancingSettings-1597001598145')]",
+                        "name": "loadBalancingSettings-1597001598145",
+                        "properties": {
+                            "additionalLatencyMilliseconds": 0,
+                            "sampleSize": 4,
+                            "successfulSamplesRequired": 2,
+                            "resourceState": "Enabled"
+                        }
+                    }
+                ],
+                "routingRules": [
+                    {
+                        "id": "[concat(resourceId('Microsoft.Network/frontdoors', parameters('frontdoors_student_management_name')), '/RoutingRules/LocationRule')]",
+                        "name": "LocationRule",
+                        "properties": {
+                            "frontendEndpoints": [
+                                {
+                                    "id": "[concat(resourceId('Microsoft.Network/frontdoors', parameters('frontdoors_student_management_name')), concat('/frontendEndpoints/', parameters('frontdoors_student_management_name'), '-azurefd-net'))]"
+                                }
+                            ],
+                            "acceptedProtocols": [
+                                "Http",
+                                "Https"
+                            ],
+                            "patternsToMatch": [
+                                "/*"
+                            ],
+                            "enabledState": "Enabled",
+                            "resourceState": "Enabled",
+                            "routeConfiguration": {
+                                "@odata.type": "#Microsoft.Azure.FrontDoor.Models.FrontdoorForwardingConfiguration",
+                                "forwardingProtocol": "HttpsOnly",
+                                "backendPool": {
+                                    "id": "[concat(resourceId('Microsoft.Network/frontdoors', parameters('frontdoors_student_management_name')), '/backendPools/myBackendPool')]"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "backendPoolsSettings": {
+                    "enforceCertificateNameCheck": "Enabled",
+                    "sendRecvTimeoutSeconds": 30
+                },
+                "enabledState": "Enabled",
+                "friendlyName": "[parameters('frontdoors_student_management_name')]"
+            }
+        }
+    ]
+}

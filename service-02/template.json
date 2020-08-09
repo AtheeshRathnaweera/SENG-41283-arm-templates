@@ -1,0 +1,197 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "sites_studentmng_smsmanager_name": {
+            "defaultValue": "studentmng-smsmanager",
+            "type": "String"
+        },
+        "serverfarms_ASP_atheeshresourceswin_ad5d_externalid": {
+            "defaultValue": "/subscriptions/88bc5906-158b-4378-8abf-4422e5c1f4bb/resourceGroups/atheesh-resources/providers/Microsoft.Web/serverfarms/ASP-atheeshresourceswin-ad5d",
+            "type": "String"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.Web/sites",
+            "apiVersion": "2018-11-01",
+            "name": "[parameters('sites_studentmng_smsmanager_name')]",
+            "location": "Australia Central",
+            "kind": "functionapp",
+            "properties": {
+                "enabled": true,
+                "hostNameSslStates": [
+                    {
+                        "name": "[concat(parameters('sites_studentmng_smsmanager_name'), '.azurewebsites.net')]",
+                        "sslState": "Disabled",
+                        "hostType": "Standard"
+                    },
+                    {
+                        "name": "[concat(parameters('sites_studentmng_smsmanager_name'), '.scm.azurewebsites.net')]",
+                        "sslState": "Disabled",
+                        "hostType": "Repository"
+                    }
+                ],
+                "serverFarmId": "[parameters('serverfarms_ASP_atheeshresourceswin_ad5d_externalid')]",
+                "reserved": false,
+                "isXenon": false,
+                "hyperV": false,
+                "siteConfig": {},
+                "scmSiteAlsoStopped": false,
+                "clientAffinityEnabled": true,
+                "clientCertEnabled": false,
+                "hostNamesDisabled": false,
+                "containerSize": 1536,
+                "dailyMemoryTimeQuota": 0,
+                "httpsOnly": false,
+                "redundancyMode": "None"
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/config",
+            "apiVersion": "2018-11-01",
+            "name": "[concat(parameters('sites_studentmng_smsmanager_name'), '/web')]",
+            "location": "Australia Central",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('sites_studentmng_smsmanager_name'))]"
+            ],
+            "properties": {
+                "numberOfWorkers": 1,
+                "defaultDocuments": [
+                    "Default.htm",
+                    "Default.html",
+                    "Default.asp",
+                    "index.htm",
+                    "index.html",
+                    "iisstart.htm",
+                    "default.aspx",
+                    "index.php"
+                ],
+                "netFrameworkVersion": "v4.0",
+                "phpVersion": "5.6",
+                "requestTracingEnabled": false,
+                "remoteDebuggingEnabled": false,
+                "httpLoggingEnabled": false,
+                "logsDirectorySizeLimit": 35,
+                "detailedErrorLoggingEnabled": false,
+                "publishingUsername": "$studentmng-smsmanager",
+                "azureStorageAccounts": {},
+                "scmType": "GitHub",
+                "use32BitWorkerProcess": true,
+                "webSocketsEnabled": false,
+                "alwaysOn": false,
+                "javaVersion": "1.8",
+                "managedPipelineMode": "Integrated",
+                "virtualApplications": [
+                    {
+                        "virtualPath": "/",
+                        "physicalPath": "site\\wwwroot",
+                        "preloadEnabled": false
+                    }
+                ],
+                "loadBalancing": "LeastRequests",
+                "experiments": {
+                    "rampUpRules": []
+                },
+                "autoHealEnabled": false,
+                "cors": {
+                    "allowedOrigins": [
+                        "https://functions.azure.com",
+                        "https://functions-staging.azure.com",
+                        "https://functions-next.azure.com"
+                    ],
+                    "supportCredentials": false
+                },
+                "localMySqlEnabled": false,
+                "ipSecurityRestrictions": [
+                    {
+                        "ipAddress": "Any",
+                        "action": "Allow",
+                        "priority": 1,
+                        "name": "Allow all",
+                        "description": "Allow all access"
+                    }
+                ],
+                "scmIpSecurityRestrictions": [
+                    {
+                        "ipAddress": "Any",
+                        "action": "Allow",
+                        "priority": 1,
+                        "name": "Allow all",
+                        "description": "Allow all access"
+                    }
+                ],
+                "scmIpSecurityRestrictionsUseMain": false,
+                "http20Enabled": false,
+                "minTlsVersion": "1.2",
+                "ftpsState": "AllAllowed",
+                "reservedInstanceCount": 0
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/deployments",
+            "apiVersion": "2018-11-01",
+            "name": "[concat(parameters('sites_studentmng_smsmanager_name'), '/fe057edf5c998f805a8e507a6573bac785040f70')]",
+            "location": "Australia Central",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('sites_studentmng_smsmanager_name'))]"
+            ],
+            "properties": {
+                "status": 4,
+                "author_email": "rathnaweeraatheesh72@gmail.com",
+                "author": "Atheesh Rathnaweera",
+                "deployer": "GitHub",
+                "message": "final commit\n",
+                "start_time": "2020-08-09T12:24:27.4227019Z",
+                "end_time": "2020-08-09T12:24:32.416112Z",
+                "active": true
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/functions",
+            "apiVersion": "2018-11-01",
+            "name": "[concat(parameters('sites_studentmng_smsmanager_name'), '/HttpExample')]",
+            "location": "Australia Central",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('sites_studentmng_smsmanager_name'))]"
+            ],
+            "properties": {
+                "script_root_path_href": "https://studentmng-smsmanager.azurewebsites.net/admin/vfs/site/wwwroot/HttpExample/",
+                "script_href": "https://studentmng-smsmanager.azurewebsites.net/admin/vfs/site/wwwroot/smsfunction-1.0-SNAPSHOT.jar",
+                "config_href": "https://studentmng-smsmanager.azurewebsites.net/admin/vfs/site/wwwroot/HttpExample/function.json",
+                "href": "https://studentmng-smsmanager.azurewebsites.net/admin/functions/HttpExample",
+                "config": {}
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/functions",
+            "apiVersion": "2018-11-01",
+            "name": "[concat(parameters('sites_studentmng_smsmanager_name'), '/SendSMS')]",
+            "location": "Australia Central",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('sites_studentmng_smsmanager_name'))]"
+            ],
+            "properties": {
+                "script_root_path_href": "https://studentmng-smsmanager.azurewebsites.net/admin/vfs/site/wwwroot/SendSMS/",
+                "script_href": "https://studentmng-smsmanager.azurewebsites.net/admin/vfs/site/wwwroot/smsfunction-1.0-SNAPSHOT.jar",
+                "config_href": "https://studentmng-smsmanager.azurewebsites.net/admin/vfs/site/wwwroot/SendSMS/function.json",
+                "href": "https://studentmng-smsmanager.azurewebsites.net/admin/functions/SendSMS",
+                "config": {}
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/hostNameBindings",
+            "apiVersion": "2018-11-01",
+            "name": "[concat(parameters('sites_studentmng_smsmanager_name'), '/', parameters('sites_studentmng_smsmanager_name'), '.azurewebsites.net')]",
+            "location": "Australia Central",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('sites_studentmng_smsmanager_name'))]"
+            ],
+            "properties": {
+                "siteName": "studentmng-smsmanager",
+                "hostNameType": "Verified"
+            }
+        }
+    ]
+}

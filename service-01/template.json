@@ -1,0 +1,237 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "sites_studentmanagement_redis_name": {
+            "defaultValue": "studentmanagement-redis",
+            "type": "String"
+        },
+        "serverfarms_ASP_atheeshresourceswin_ad5d_externalid": {
+            "defaultValue": "/subscriptions/88bc5906-158b-4378-8abf-4422e5c1f4bb/resourceGroups/atheesh-resources/providers/Microsoft.Web/serverfarms/ASP-atheeshresourceswin-ad5d",
+            "type": "String"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.Web/sites",
+            "apiVersion": "2018-11-01",
+            "name": "[parameters('sites_studentmanagement_redis_name')]",
+            "location": "Australia Central",
+            "kind": "app",
+            "properties": {
+                "enabled": true,
+                "hostNameSslStates": [
+                    {
+                        "name": "[concat(parameters('sites_studentmanagement_redis_name'), '.azurewebsites.net')]",
+                        "sslState": "Disabled",
+                        "hostType": "Standard"
+                    },
+                    {
+                        "name": "[concat(parameters('sites_studentmanagement_redis_name'), '.scm.azurewebsites.net')]",
+                        "sslState": "Disabled",
+                        "hostType": "Repository"
+                    }
+                ],
+                "serverFarmId": "[parameters('serverfarms_ASP_atheeshresourceswin_ad5d_externalid')]",
+                "reserved": false,
+                "isXenon": false,
+                "hyperV": false,
+                "siteConfig": {},
+                "scmSiteAlsoStopped": false,
+                "clientAffinityEnabled": true,
+                "clientCertEnabled": false,
+                "hostNamesDisabled": false,
+                "containerSize": 0,
+                "dailyMemoryTimeQuota": 0,
+                "httpsOnly": false,
+                "redundancyMode": "None"
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/config",
+            "apiVersion": "2018-11-01",
+            "name": "[concat(parameters('sites_studentmanagement_redis_name'), '/web')]",
+            "location": "Australia Central",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('sites_studentmanagement_redis_name'))]"
+            ],
+            "properties": {
+                "numberOfWorkers": 1,
+                "defaultDocuments": [
+                    "Default.htm",
+                    "Default.html",
+                    "Default.asp",
+                    "index.htm",
+                    "index.html",
+                    "iisstart.htm",
+                    "default.aspx",
+                    "index.php",
+                    "hostingstart.html"
+                ],
+                "netFrameworkVersion": "v4.0",
+                "requestTracingEnabled": true,
+                "requestTracingExpirationTime": "9999-12-31T23:59:00Z",
+                "remoteDebuggingEnabled": false,
+                "remoteDebuggingVersion": "VS2019",
+                "httpLoggingEnabled": true,
+                "logsDirectorySizeLimit": 35,
+                "detailedErrorLoggingEnabled": true,
+                "publishingUsername": "$studentmanagement-redis",
+                "azureStorageAccounts": {},
+                "scmType": "GitHub",
+                "use32BitWorkerProcess": false,
+                "webSocketsEnabled": false,
+                "alwaysOn": true,
+                "javaVersion": "1.8",
+                "javaContainer": "TOMCAT",
+                "javaContainerVersion": "9.0",
+                "managedPipelineMode": "Integrated",
+                "virtualApplications": [
+                    {
+                        "virtualPath": "/",
+                        "physicalPath": "site\\wwwroot",
+                        "preloadEnabled": true
+                    }
+                ],
+                "loadBalancing": "LeastRequests",
+                "experiments": {
+                    "rampUpRules": []
+                },
+                "autoHealEnabled": false,
+                "localMySqlEnabled": false,
+                "ipSecurityRestrictions": [
+                    {
+                        "ipAddress": "Any",
+                        "action": "Allow",
+                        "priority": 1,
+                        "name": "Allow all",
+                        "description": "Allow all access"
+                    }
+                ],
+                "scmIpSecurityRestrictions": [
+                    {
+                        "ipAddress": "Any",
+                        "action": "Allow",
+                        "priority": 1,
+                        "name": "Allow all",
+                        "description": "Allow all access"
+                    }
+                ],
+                "scmIpSecurityRestrictionsUseMain": false,
+                "http20Enabled": false,
+                "minTlsVersion": "1.2",
+                "ftpsState": "AllAllowed",
+                "reservedInstanceCount": 0
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/deployments",
+            "apiVersion": "2018-11-01",
+            "name": "[concat(parameters('sites_studentmanagement_redis_name'), '/3d62bff24c3ef82bd67d9622ceaa921cf592af6a')]",
+            "location": "Australia Central",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('sites_studentmanagement_redis_name'))]"
+            ],
+            "properties": {
+                "status": 4,
+                "author_email": "rathnaweeraatheesh72@gmail.com",
+                "author": "Atheesh Rathnaweera",
+                "deployer": "GitHub",
+                "message": "initial commit\n",
+                "start_time": "2020-08-09T17:06:58.4467722Z",
+                "end_time": "2020-08-09T17:07:10.9144813Z",
+                "active": false
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/deployments",
+            "apiVersion": "2018-11-01",
+            "name": "[concat(parameters('sites_studentmanagement_redis_name'), '/a0cdcf954336995e4aa399b901c86297e63c774f')]",
+            "location": "Australia Central",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('sites_studentmanagement_redis_name'))]"
+            ],
+            "properties": {
+                "status": 4,
+                "author_email": "rathnaweeraatheesh72@gmail.com",
+                "author": "Atheesh Rathnaweera",
+                "deployer": "GitHub",
+                "message": "update\n",
+                "start_time": "2020-08-09T19:46:54.4080224Z",
+                "end_time": "2020-08-09T19:46:59.3378208Z",
+                "active": false
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/deployments",
+            "apiVersion": "2018-11-01",
+            "name": "[concat(parameters('sites_studentmanagement_redis_name'), '/e814e623502d575471b96568ba55bcc4a5637906')]",
+            "location": "Australia Central",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('sites_studentmanagement_redis_name'))]"
+            ],
+            "properties": {
+                "status": 4,
+                "author_email": "rathnaweeraatheesh72@gmail.com",
+                "author": "Atheesh Rathnaweera",
+                "deployer": "GitHub",
+                "message": "update\n",
+                "start_time": "2020-08-09T19:51:18.6788179Z",
+                "end_time": "2020-08-09T19:51:23.4288744Z",
+                "active": true
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/deployments",
+            "apiVersion": "2018-11-01",
+            "name": "[concat(parameters('sites_studentmanagement_redis_name'), '/f5d59c6562d540b123bd927d00b50d3afa004e99')]",
+            "location": "Australia Central",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('sites_studentmanagement_redis_name'))]"
+            ],
+            "properties": {
+                "status": 4,
+                "author_email": "rathnaweeraatheesh72@gmail.com",
+                "author": "Atheesh Rathnaweera",
+                "deployer": "GitHub",
+                "message": "configuration file updated\n",
+                "start_time": "2020-08-09T17:23:26.82378Z",
+                "end_time": "2020-08-09T17:23:30.038235Z",
+                "active": false
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/deployments",
+            "apiVersion": "2018-11-01",
+            "name": "[concat(parameters('sites_studentmanagement_redis_name'), '/f8eccc5a95e111eb1e8c9bc0f66405243df653a9')]",
+            "location": "Australia Central",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('sites_studentmanagement_redis_name'))]"
+            ],
+            "properties": {
+                "status": 4,
+                "author_email": "rathnaweeraatheesh72@gmail.com",
+                "author": "Atheesh Rathnaweera",
+                "deployer": "GitHub",
+                "message": "jar name changed\n",
+                "start_time": "2020-08-09T18:20:09.773295Z",
+                "end_time": "2020-08-09T18:20:14.3258975Z",
+                "active": false
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/hostNameBindings",
+            "apiVersion": "2018-11-01",
+            "name": "[concat(parameters('sites_studentmanagement_redis_name'), '/', parameters('sites_studentmanagement_redis_name'), '.azurewebsites.net')]",
+            "location": "Australia Central",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('sites_studentmanagement_redis_name'))]"
+            ],
+            "properties": {
+                "siteName": "studentmanagement-redis",
+                "hostNameType": "Verified"
+            }
+        }
+    ]
+}

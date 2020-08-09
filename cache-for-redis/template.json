@@ -1,0 +1,45 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "Redis_studentmanagementcache_name": {
+            "defaultValue": "studentmanagementcache",
+            "type": "String"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.Cache/Redis",
+            "apiVersion": "2019-07-01",
+            "name": "[parameters('Redis_studentmanagementcache_name')]",
+            "location": "Central US",
+            "properties": {
+                "sku": {
+                    "name": "Basic",
+                    "family": "C",
+                    "capacity": 0
+                },
+                "enableNonSslPort": false,
+                "redisConfiguration": {
+                    "maxclients": "256",
+                    "maxmemory-reserved": "2",
+                    "maxfragmentationmemory-reserved": "12",
+                    "maxmemory-delta": "2"
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Cache/Redis/firewallRules",
+            "apiVersion": "2019-07-01",
+            "name": "[concat(parameters('Redis_studentmanagementcache_name'), '/myClient')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Cache/Redis', parameters('Redis_studentmanagementcache_name'))]"
+            ],
+            "properties": {
+                "startIP": "20.36.42.0",
+                "endIP": "20.36.46.255"
+            }
+        }
+    ]
+}
